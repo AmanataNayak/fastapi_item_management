@@ -1,4 +1,4 @@
-# FastAPI User Management System with Voting and Items
+# FastAPI Item Management System with Voting and Items
 
 A  item management system built with FastAPI, utilizing PostgreSQL for database operations. This project includes user registration, login, item management, and rating features.
 
