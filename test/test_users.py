@@ -1,6 +1,6 @@
 from fastapi import status
 import pytest
-from test.database import client, session
+from test.conftest import client, session
 
 
 def test_root(client):
