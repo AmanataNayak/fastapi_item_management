@@ -13,8 +13,8 @@ def test_root():
 
 
 @pytest.mark.parametrize('email, password',[
-    ('pavan@gmail.com','123'),
-    ('rimjhim@gmail.com','rim')
+    ('test@gmail.com', '123'),
+    ('try@gmail.com', 'abc')
 ])
 def test_create_user(email, password):
     res = client.post('/users/',json={'email':email, 'password': password})
