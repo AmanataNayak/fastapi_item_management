@@ -1,7 +1,7 @@
 from typing import Optional, List
 from fastapi import status, Depends, APIRouter
 from sqlalchemy.orm import Session
-from app.CRUD import item as i
+from app.crud import item as i
 from app.database import get_db
 from app.schema import ItemCreate, Item, ItemOut
 from app import oauth2

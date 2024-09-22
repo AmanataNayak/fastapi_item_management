@@ -23,8 +23,6 @@ class User(Base):
     email = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
-    # add a new column for db migration
-    phone_no = Column(String)
 
 
 class Rating(Base):

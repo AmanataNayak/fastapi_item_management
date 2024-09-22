@@ -4,7 +4,7 @@ import jwt
 from jwt.exceptions import PyJWTError
 from fastapi import Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from app.CRUD import user
+from app.crud import user
 from sqlalchemy.orm import Session
 from .config import setting
 

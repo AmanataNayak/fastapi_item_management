@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, Depends
 from app import schema, database, oauth2
 from sqlalchemy.orm import Session
-from app.CRUD import rating
+from app.crud import rating
 
 router = APIRouter(
     prefix='/rate',

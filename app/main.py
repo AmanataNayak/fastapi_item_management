@@ -1,9 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import item, user, auth, rating
-from logging_setup import logger
 
-logger.info('Connect to database fastapi')
 app = FastAPI()
 
 origins = ['*']
