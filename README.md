@@ -22,6 +22,6 @@ A  item management system built with FastAPI, utilizing PostgreSQL for database 
 - **PostgreSQL**: Database for storing user and item information
 - **SQLAlchemy**: ORM for database operations
 - **pytest**: Testing framework for Python
-- **Docker**: For containerization (if applicable)
+- **Docker**: For containerization 
 - **Alembic**: For database migration
 
