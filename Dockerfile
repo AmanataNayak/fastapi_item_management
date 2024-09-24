@@ -4,5 +4,6 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 COPY entrypoint.sh ./
+RUN mkdir -p uploads
 RUN chmod +x entrypoint.sh
 ENTRYPOINT ["sh","./entrypoint.sh"]
