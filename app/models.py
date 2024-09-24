@@ -12,6 +12,7 @@ class Item(Base):
     name = Column(String, nullable=False)
     price = Column(Integer, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+    file_path = Column(String, nullable=False)
     owner_id = Column(Integer, ForeignKey('User.id', ondelete='CASCADE'), nullable=False)
 
     owner = relationship('User')

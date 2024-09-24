@@ -29,6 +29,7 @@ class ItemCreate(ItemBase):
 class Item(ItemCreate):
     created_at: datetime
     owner_id: int
+    file_path: str
     owner: UserOut
 
     class Config:

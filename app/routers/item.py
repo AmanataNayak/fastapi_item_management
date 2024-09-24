@@ -1,11 +1,11 @@
 from typing import Optional, List
-from fastapi import status, Depends, APIRouter
+from fastapi import status, Depends, APIRouter, File, UploadFile, HTTPException
 from sqlalchemy.orm import Session
 from app.crud import item as i
 from app.database import get_db
 from app.schema import ItemCreate, Item, ItemOut
 from app import oauth2
-
+from app.utils import is_image, create_file_path, item_create_form, delete_file
 
 router = APIRouter(
     prefix='/items',
@@ -14,8 +14,14 @@ router = APIRouter(
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=Item)
-def create_item(item: ItemCreate, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
-    return i.create_item(db, item, current_user)
+async def create_item(item: ItemCreate = item_create_form(ItemCreate), file: UploadFile = File(...),
+                      db: Session = Depends(get_db),
+                      current_user=Depends(oauth2.get_current_user)):
+    if not is_image(file):
+        raise HTTPException(status_code=400, detail='File must be a valid image (PNG, JPG).')
+
+    file_path = await create_file_path(file, item.name, item.price, current_user.id)
+    return i.create_item(db, item, file_path, current_user)
 
 
 @router.get('/', response_model=List[ItemOut])
@@ -34,5 +40,12 @@ def delete_item(id: int, db: Session = Depends(get_db), current_user: int = Depe
 
 
 @router.put('/{id}', response_model=Item)
-def update_item(id: int, item_dict: ItemCreate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    return i.update_item(db, id, item_dict, current_user)
+async def update_item(id: int, item_dict: ItemCreate = item_create_form(ItemCreate), file: UploadFile = File(...),
+                      db: Session = Depends(get_db),
+                      current_user: int = Depends(oauth2.get_current_user)):
+    if not is_image(file):
+        raise HTTPException(status_code=400, detail='File must be a valid image (PNG, JPG).')
+
+    file_path = await create_file_path(file, item_dict.name, item_dict.price, current_user.id)
+
+    return i.update_item(db, id, item_dict, file_path, current_user)
