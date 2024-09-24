@@ -7,7 +7,8 @@ from sqlalchemy.orm import sessionmaker
 from app.config import setting
 from app.database import get_db, Base
 from app.oauth2 import create_access_token
-from app.models import Item
+from app.models import Item, Rating
+import random
 
 SQLALCHEMY_DATABASE_URL = f'postgresql://{setting.database_username}:{setting.database_password}@{setting.database_hostname}:{setting.database_port}/{setting.database_name}_test'
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -96,3 +97,10 @@ def test_items(test_user, session):
     items = session.query(Item).all()
 
     return items
+
+
+@pytest.fixture()
+def test_rate(test_items, session, test_user):
+    new_rate = Rating(item_id=test_items[0].id, user_id=test_user['id'], rating=random.randint(1, 5))
+    session.add(new_rate)
+    session.commit()
