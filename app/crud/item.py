@@ -7,7 +7,7 @@ from sqlalchemy import func
 from app.utils import delete_file
 
 
-async def create_item(db: Session, item: schema.ItemCreate, file_path: str, current_user):
+def create_item(db: Session, item: schema.ItemCreate, file_path: str, current_user):
     db_item = models.Item(owner_id=current_user.id, file_path=file_path, **item.dict())
     db.add(db_item)
     db.commit()
@@ -89,8 +89,11 @@ def update_item(db: Session, id: int, item_dict: schema.ItemCreate, file_path: s
     if item.owner_id != current_user.id:
         logger.warning(f'Unauthorized user try to update id:{current_user.id}')
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Not authorized to perform this action.')
-    delete_file(item.file_path)
-    item.file_path = file_path
+
+    if file_path != item.file_path:
+        delete_file(item.file_path)
+        item.file_path = file_path
+
     query.update(item_dict.dict(), synchronize_session=False)
     db.commit()
     logger.info(f'Item with id:{id} updated successfully')
